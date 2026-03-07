@@ -7,7 +7,7 @@ Security fixes are provided for the latest `main` branch state.
 Please do not open a public issue for security vulnerabilities.
 
 Report privately by email:
-- `utkarsh.adhran@openfutures.co.in`
+- `utadhran@gmail.com`
 
 Include:
 - summary of the issue

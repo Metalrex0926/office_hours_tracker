@@ -15,4 +15,4 @@ Project maintainers may remove comments, close threads, or block participation f
 
 ## Reporting
 Report conduct issues privately to:
-- `utkarsh.adhran@openfutures.co.in`
+- `utadhran@gmail.com`
