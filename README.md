@@ -19,29 +19,51 @@ nvm use 24
 npm install
 ```
 
-## PocketBase Setup
-1. Run PocketBase server.
-2. Create collection `users` (PocketBase auth collection).
-3. Add optional `timezone` text field to `users`.
-4. Create collection `user_state` with fields:
-   - `user` (relation -> `users`, required, unique)
-   - `payload` (json or text, required)
-   - `lastModified` (date or text)
+## PocketBase Setup (Detailed)
+Use Admin UI: `http://127.0.0.1:8090/_/`
 
-### `user_state` API rules (privacy)
-- List rule: `@request.auth.id != "" && user = @request.auth.id`
-- View rule: `@request.auth.id != "" && user = @request.auth.id`
-- Create rule: `@request.auth.id != "" && user = @request.auth.id`
-- Update rule: `@request.auth.id != "" && user = @request.auth.id`
-- Delete rule: `@request.auth.id != "" && user = @request.auth.id`
+1. Sign in to PocketBase Admin.
+2. Go to `Collections` -> `+ New collection`.
+3. Create auth collection `users`:
+   - Type: `Auth`
+   - Name: `users`
+   - Keep default auth fields (`email`, `password`)
+4. In `users` -> `Fields` add:
+   - `name` (text, required, min 2, max 80)
+   - `timezone` (text, required, default `Asia/Kolkata`, max 80)
+5. In `users` -> `API Rules` set:
+   - List: `id = @request.auth.id`
+   - View: `id = @request.auth.id`
+   - Update: `id = @request.auth.id`
+   - Delete: `id = @request.auth.id`
+   - Create can remain default for signup from app.
+6. Create `user_state` collection:
+   - Type: `Base`
+   - Name: `user_state`
+7. In `user_state` -> `Fields` add:
+   - `user` (relation -> `users`, max select 1, required, unique)
+   - `payload` (JSON, required)
+   - `lastModified` (date, required)
+8. In `user_state` -> `API Rules` set all to:
+   - List: `@request.auth.id != "" && user = @request.auth.id`
+   - View: `@request.auth.id != "" && user = @request.auth.id`
+   - Create: `@request.auth.id != "" && user = @request.auth.id`
+   - Update: `@request.auth.id != "" && user = @request.auth.id`
+   - Delete: `@request.auth.id != "" && user = @request.auth.id`
+9. Save and test:
+   - Sign up from app on Android.
+   - Sign in with same account on iOS.
+   - Add one leave/session on one device and verify it appears on the other device after sync.
 
-This keeps every user fully isolated (no manager/HR approvals, no cross-user access).
+This setup keeps data private per user and has no manager/HR approval flow.
 
 ## Environment
 Create `.env`:
 ```bash
-EXPO_PUBLIC_POCKETBASE_URL=http://YOUR_IP:8090
+EXPO_PUBLIC_POCKETBASE_URL=http://127.0.0.1:8090
 ```
+
+For physical Android/iOS devices, replace `127.0.0.1` with your computer LAN IP (example `192.168.1.10`) because phone localhost is not your laptop localhost.
 
 Optional animation overrides:
 ```bash
