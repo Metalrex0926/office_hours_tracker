@@ -57,6 +57,16 @@ Use Admin UI: `http://127.0.0.1:8090/_/`
 
 This setup keeps data private per user and has no manager/HR approval flow.
 
+### Import and Start (recommended)
+You can keep a reusable schema export inside this repo:
+- Folder: `pocketbase/`
+- Guide: `pocketbase/README.md`
+- Placeholder: `pocketbase/collections.template.json`
+- Expected import file name: `pocketbase/collections.json`
+
+Once `collections.json` exists, a new user can directly import from:
+`Settings -> Import collections -> Load from JSON file`.
+
 ## Environment
 Create `.env`:
 ```bash

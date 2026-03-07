@@ -1,0 +1,22 @@
+{
+  "note": "Replace this file with a real export from PocketBase Settings -> Export collections and rename it to collections.json",
+  "requiredCollections": [
+    "users (Auth)",
+    "user_state (Base)"
+  ],
+  "requiredRules": {
+    "users": {
+      "list": "id = @request.auth.id",
+      "view": "id = @request.auth.id",
+      "update": "id = @request.auth.id",
+      "delete": "id = @request.auth.id"
+    },
+    "user_state": {
+      "list": "@request.auth.id != \"\" && user = @request.auth.id",
+      "view": "@request.auth.id != \"\" && user = @request.auth.id",
+      "create": "@request.auth.id != \"\" && user = @request.auth.id",
+      "update": "@request.auth.id != \"\" && user = @request.auth.id",
+      "delete": "@request.auth.id != \"\" && user = @request.auth.id"
+    }
+  }
+}
