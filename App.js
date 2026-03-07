@@ -263,14 +263,15 @@ export default function App() {
 
   const parseCloudPayload = (record) => {
     if (!record?.payload) return createEmptyTrackerState();
+    const remoteUpdated = typeof record.updated === 'string' ? record.updated : new Date(0).toISOString();
     if (typeof record.payload === 'string') {
       try {
-        return normalizeTrackerState(JSON.parse(record.payload));
+        return normalizeTrackerState({ ...JSON.parse(record.payload), lastModified: remoteUpdated });
       } catch {
         return createEmptyTrackerState();
       }
     }
-    return normalizeTrackerState(record.payload);
+    return normalizeTrackerState({ ...record.payload, lastModified: remoteUpdated });
   };
 
   const upsertCloudState = async (nextState, statusText = 'syncing') => {
@@ -278,20 +279,16 @@ export default function App() {
     setSyncStatus(statusText);
 
     const pb = pbRef.current;
-    const payload = JSON.stringify(nextState);
-
     try {
       const current = await fetchCloudStateRecord(pb, user.id);
       if (current) {
         await pb.collection(CLOUD_COLLECTION).update(current.id, {
-          payload,
-          lastModified: nextState.lastModified
+          payload: nextState
         });
       } else {
         await pb.collection(CLOUD_COLLECTION).create({
           user: user.id,
-          payload,
-          lastModified: nextState.lastModified
+          payload: nextState
         });
       }
       setSyncStatus('synced');

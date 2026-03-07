@@ -43,7 +43,6 @@ Use Admin UI: `http://127.0.0.1:8090/_/`
 7. In `user_state` -> `Fields` add:
    - `user` (relation -> `users`, max select 1, required, unique)
    - `payload` (JSON, required)
-   - `lastModified` (date, required)
 8. In `user_state` -> `API Rules` set all to:
    - List: `@request.auth.id != "" && user = @request.auth.id`
    - View: `@request.auth.id != "" && user = @request.auth.id`
@@ -62,9 +61,9 @@ You can keep a reusable schema export inside this repo:
 - Folder: `pocketbase/`
 - Guide: `pocketbase/README.md`
 - Placeholder: `pocketbase/collections.template.json`
-- Expected import file name: `pocketbase/collections.json`
+- Expected import file name: `pocketbase/pb_schema.json`
 
-Once `collections.json` exists, a new user can directly import from:
+Once `pb_schema.json` exists, a new user can directly import from:
 `Settings -> Import collections -> Load from JSON file`.
 
 ## Environment
@@ -110,3 +109,4 @@ Covers:
 - Auth token/model is stored in `expo-secure-store`.
 - Tracker data cache is per-user key.
 - Cloud access depends on strict per-user PocketBase rules above.
+- Sync conflict resolution uses PocketBase built-in `updated` timestamp.

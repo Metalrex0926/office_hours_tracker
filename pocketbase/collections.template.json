@@ -12,6 +12,10 @@
       "delete": "id = @request.auth.id"
     },
     "user_state": {
+      "fields": [
+        "user (relation to users, single, nonempty, unique)",
+        "payload (json, nonempty)"
+      ],
       "list": "@request.auth.id != \"\" && user = @request.auth.id",
       "view": "@request.auth.id != \"\" && user = @request.auth.id",
       "create": "@request.auth.id != \"\" && user = @request.auth.id",
